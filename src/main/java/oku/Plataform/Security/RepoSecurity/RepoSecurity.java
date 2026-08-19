@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepoSecurity extends JpaRepository<Users, String> {
+    Users findByLogin(String login);
 }
