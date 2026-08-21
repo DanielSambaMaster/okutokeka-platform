@@ -12,3 +12,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  spring:
+    security:
+      name: Daniel
+      password: tedesca
