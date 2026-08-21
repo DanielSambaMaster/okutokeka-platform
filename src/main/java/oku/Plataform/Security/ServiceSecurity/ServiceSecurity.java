@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -28,16 +29,22 @@ public class ServiceSecurity implements UserDetailsService {
 
     public ResponseEntity RegistarUser(RegisterDTO dataDTO){
 
-        if(repo.findByLogin(dataDTO.login()) ==null) return ResponseEntity.badRequest().build();
+        if(repo.findByLogin(dataDTO.login()) != null){
+            return ResponseEntity.badRequest().build();
+        }
 
-        Users newUser = new Users(dataDTO.login(), dataDTO.password());
+
+        Users newUser = new Users(dataDTO.login(), new BCryptPasswordEncoder().encode(dataDTO.password()));
         repo.save(newUser);
 
 
-        return ResponseEntity.ok(repo.findAll());
+        return ResponseEntity.ok().build();
     }
 
     public ResponseEntity get(){
+
+
+
         return ResponseEntity.ok(repo.findAll());
     }
 

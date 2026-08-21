@@ -15,5 +15,6 @@ spring:
 
   spring:
     security:
-      name: Daniel
-      password: tedesca
+      user:
+        name: Daniel
+        password: tedesca
