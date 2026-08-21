@@ -13,7 +13,7 @@ public class ControllerGeral {
 
 @GetMapping("/")
     public String geral(){
-    return "index";
+    return "forward:/index.html";
 }
 
 }
