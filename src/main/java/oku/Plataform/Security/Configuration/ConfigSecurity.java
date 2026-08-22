@@ -1,4 +1,4 @@
-package oku.Plataform.Security.ConfigSecurity;
+package oku.Plataform.Security.Configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,13 +39,14 @@ public class ConfigSecurity {
                         // PÚBLICOS
                         // =========================
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/").permitAll()
+
 
                         // =========================
                         // AUTENTICADO
                         // =========================
                         .requestMatchers(HttpMethod.GET, "/auth/Get").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/auth/Register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/Register").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/").authenticated()
                         .requestMatchers("/tickets/**").authenticated()
 
                         // =========================

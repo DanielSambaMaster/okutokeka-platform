@@ -22,12 +22,14 @@ public class ServiceSecurity implements UserDetailsService {
 
         if(repositoryUsersSecurity.findByLogin(data.login()) != null){
 
-            String encodePassword = new BCryptPasswordEncoder().encode(data.password());
-            Users newUser = new Users( data.login(), data.username(), data.emailAddress(), data.phoneNumber(), encodePassword);
-
+            return ResponseEntity.badRequest().build();
 
         }
-        return ResponseEntity.badRequest().build();
+
+        String encodePassword = new BCryptPasswordEncoder().encode(data.password());
+        Users newUser = new Users( data.login(), data.username(), data.emailAddress(), data.phoneNumber(), encodePassword);
+        repositoryUsersSecurity.save(newUser);
+        return ResponseEntity.ok(newUser);
     }
 
 

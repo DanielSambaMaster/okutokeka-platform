@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -28,28 +29,20 @@ public class ControllerSecurity {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authentication(
-            @RequestBody @Validated AuthenticationDTO data,
-            HttpServletRequest request) {
+    public ResponseEntity<?> authentication(@RequestBody @Validated  HttpServletRequest request, AuthenticationDTO data) {
 
-        var auth = new UsernamePasswordAuthenticationToken(
-                data.login(),
-                data.password()
-        );
 
-        var authentication = authenticationManager.authenticate(auth);
 
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(authentication);
 
-        SecurityContextHolder.setContext(context);
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(data.login(), data.login()));
 
-        HttpSession session = request.getSession(true);
 
-        session.setAttribute(
-                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                context
-        );
+     if(authenticate.isAuthenticated()){
+         ResponseEntity.ok("User está autenticado");
+         System.out.println(request.getSession().getId());
+     }
+
+        System.out.println(request.getSession().getId());
 
         return ResponseEntity.ok("Login realizado com sucesso");
     }
