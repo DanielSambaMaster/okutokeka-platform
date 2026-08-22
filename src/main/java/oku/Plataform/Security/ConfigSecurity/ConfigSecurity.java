@@ -26,38 +26,24 @@ public class ConfigSecurity {
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .httpBasic(Customizer.withDefaults())
+
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
+
                 .authorizeHttpRequests(auth -> auth
 
                         // Público
-
-                        .requestMatchers(HttpMethod.GET, "/").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/").permitAll().anyRequest().authenticated()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/Register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/Register").permitAll().anyRequest().authenticated()
                         .requestMatchers(HttpMethod.GET, "/auth/Get").permitAll()
-                        .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()
-                        .anyRequest().authenticated()
                         // Tudo o resto precisa de autenticação
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/login?error=true")
-                        .permitAll()
+                        .anyRequest().authenticated()
                 )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout=true")
-                        .permitAll()
-                );
-
-
-
-        ;
-
+;
         return httpSecurity.build();
     }
 
