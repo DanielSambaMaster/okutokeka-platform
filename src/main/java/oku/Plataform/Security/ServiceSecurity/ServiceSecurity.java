@@ -34,8 +34,6 @@ public class ServiceSecurity implements UserDetailsService {
         }
 
 
-        Users newUser = new Users(dataDTO.login(), new BCryptPasswordEncoder().encode(dataDTO.password()));
-        repo.save(newUser);
 
 
         return ResponseEntity.ok().build();

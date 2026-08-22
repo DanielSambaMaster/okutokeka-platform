@@ -35,18 +35,33 @@ public class ConfigSecurity {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // Público
-                        .requestMatchers(HttpMethod.GET, "/").permitAll().anyRequest().authenticated()
+                        // =========================
+                        // PÚBLICOS
+                        // =========================
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/Register").permitAll().anyRequest().authenticated()
-                        .requestMatchers(HttpMethod.GET, "/auth/Get").permitAll()
-                        // Tudo o resto precisa de autenticação
+                        .requestMatchers(HttpMethod.GET, "/").permitAll()
+
+                        // =========================
+                        // AUTENTICADO
+                        // =========================
+                        .requestMatchers(HttpMethod.GET, "/auth/Get").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/auth/Register").permitAll()
+                        .requestMatchers("/tickets/**").authenticated()
+
+                        // =========================
+                        // APENAS ADMIN
+                        // =========================
+                        .requestMatchers("/users/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // =========================
+                        // RESTO
+                        // =========================
                         .anyRequest().authenticated()
-                )
-;
+                );
+
         return httpSecurity.build();
     }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config){
         return config.getAuthenticationManager();
