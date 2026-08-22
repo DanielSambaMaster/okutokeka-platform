@@ -61,7 +61,11 @@ public class ConfigSecurity {
                         .anyRequest().authenticated()
                 );
 
-        return httpSecurity.build();
+        return httpSecurity
+
+
+                .addFilterBefore()
+                .build();
     }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config){
