@@ -1,4 +1,4 @@
-package oku.Plataform.Security.ModelSecurity;
+package oku.Plataform.Security.Model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,18 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -69,18 +66,27 @@ public class Users implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @Override
+
+
+
+    public Users(  String login, String username, String emailAddress,String phoneNumber,String password
+    ){
+        this.login =login;
+        this.username =username;
+        this.emailAddress =emailAddress;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+
+
+    }
+
+
+
+
+
+        @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = roles.stream()
-                .flatMap(role -> role.getPermissions().stream())
-                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
-                .collect(Collectors.toSet());
-
-        roles.forEach(role ->
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()))
-        );
-
-        return authorities;
+   return null;
     }
 
     @Override

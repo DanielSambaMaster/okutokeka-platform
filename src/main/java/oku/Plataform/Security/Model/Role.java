@@ -1,4 +1,4 @@
-package oku.Plataform.Security.ModelSecurity;
+package oku.Plataform.Security.Model;
 
 
 import jakarta.persistence.*;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "Role")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -41,5 +41,6 @@ public class Role {
     public String getName() {
         return this.name;
     }
+
 
 }

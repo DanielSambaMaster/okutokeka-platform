@@ -1,4 +1,4 @@
-package oku.Plataform.Security.ModelSecurity;
+package oku.Plataform.Security.Model;
 
 public enum OperatorStatus {
     AVAILABLE,

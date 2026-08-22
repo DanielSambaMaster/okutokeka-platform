@@ -1,23 +1,19 @@
-package oku.Plataform.Security.ControllerSecurity;
+package oku.Plataform.Security.Controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import oku.Plataform.Security.ModelSecurity.AuthUserDTO;
-import oku.Plataform.Security.ModelSecurity.RegisterDTO;
-import oku.Plataform.Security.ModelSecurity.Users;
-import oku.Plataform.Security.ServiceSecurity.ServiceSecurity;
+import oku.Plataform.Security.Model.DataTransferObjects.AuthenticationDTO;
+import oku.Plataform.Security.Model.DataTransferObjects.RegisterDTO;
+import oku.Plataform.Security.Service.ServiceSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Security;
 
 
 //auth/Authentication
@@ -32,13 +28,13 @@ public class ControllerSecurity {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<?> autheUser(
-            @RequestBody @Validated AuthUserDTO dataDTO,
+    public ResponseEntity<?> authentication(
+            @RequestBody @Validated AuthenticationDTO data,
             HttpServletRequest request) {
 
         var auth = new UsernamePasswordAuthenticationToken(
-                dataDTO.login(),
-                dataDTO.password()
+                data.login(),
+                data.password()
         );
 
         var authentication = authenticationManager.authenticate(auth);
@@ -59,18 +55,12 @@ public class ControllerSecurity {
     }
 
     @PostMapping("/Register")
-    public ResponseEntity authoUser(@RequestBody @Validated RegisterDTO dataDTO){
+    public ResponseEntity registerEnpoint(@RequestBody @Validated RegisterDTO data){
 
-        return ResponseEntity.ok(serviceSecurity.RegistarUser(dataDTO));
+        serviceSecurity.RegisterUser(data);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/Get")
-    public ResponseEntity authoUser(){
 
-
-
-
-        return ResponseEntity.ok(serviceSecurity.get());
-    }
 
 }
